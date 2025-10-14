@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gray-50 p-6">
+<div class="min-h-screen bg-white dark:bg-gray-900 p-6 transition-colors duration-200">
   <!-- Main container -->
   <div class="max-w-6xl mx-auto">
 
@@ -6,14 +6,14 @@
     <div class="mb-8">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 class="text-3xl font-bold text-gray-900"><%= @page_title %></h1>
-          <p class="mt-2 text-gray-600">Manage your product catalog and inventory</p>
+          <h1 class="text-3xl font-bold text-gray-900 dark:text-white"><%= @page_title %></h1>
+          <p class="mt-2 text-gray-600 dark:text-gray-400">Manage your product catalog and inventory</p>
         </div>
 
         <!-- New product button -->
         <.link
           patch={~p"/admin/products/new"}
-          class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md font-medium"
+          class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2.5 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md font-medium"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -30,8 +30,8 @@
     </div>
 
     <!-- Search section -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-      <h2 class="text-lg font-semibold text-gray-800 mb-4">Find Products</h2>
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Find Products</h2>
       <form phx-change="search" class="max-w-md">
         <div class="relative">
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -55,7 +55,7 @@
             name="term"
             placeholder="Search by product name, description..."
             value={@term || ""}
-            class="block w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+            class="block w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-200"
             phx-debounce="300"
           />
         </div>
@@ -63,12 +63,12 @@
     </div>
 
     <!-- Products table section -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div class="px-6 py-4 border-b border-gray-200">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="text-lg font-semibold text-gray-800">All Products</h2>
-            <p class="text-sm text-gray-600 mt-1">
+            <h2 class="text-lg font-semibold text-gray-800 dark:text-white">All Products</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
               <%= if length(@products) == 1 do %>
                 Showing 1 product
               <% else %>
@@ -80,24 +80,24 @@
       </div>
 
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead class="bg-gray-50 dark:bg-gray-700">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Product</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Description</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Price</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Category</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             <%= for product <- @products do %>
-              <tr class="hover:bg-gray-50 transition-colors duration-150 group">
+              <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 group">
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center gap-3">
-                    <div class="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center">
+                    <div class="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 rounded-lg flex items-center justify-center">
                       <svg
-                        class="h-5 w-5 text-green-600"
+                        class="h-5 w-5 text-green-600 dark:text-green-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -112,25 +112,25 @@
                       </svg>
                     </div>
                     <div>
-                      <div class="text-sm font-semibold text-gray-900"><%= product.name %></div>
-                      <div class="text-xs text-gray-500">ID: <%= product.id %></div>
+                      <div class="text-sm font-semibold text-gray-900 dark:text-white"><%= product.name %></div>
+                      <div class="text-xs text-gray-500 dark:text-gray-400">ID: <%= product.id %></div>
                     </div>
                   </div>
                 </td>
                 <td class="px-6 py-4">
-                  <div class="text-sm text-gray-600 max-w-md">
+                  <div class="text-sm text-gray-600 dark:text-gray-300 max-w-md">
                     <%= if product.description do %>
                       <%= product.description %>
                     <% else %>
-                      <span class="text-gray-400 italic">No description provided</span>
+                      <span class="text-gray-400 dark:text-gray-500 italic">No description provided</span>
                     <% end %>
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                   Ksh <%= product.price %>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
                     <%= (product.category && product.category.name) || "Uncategorized" %>
                   </span>
                 </td>
@@ -138,7 +138,7 @@
                   <div class="flex items-center space-x-3">
                     <.link
                       patch={~p"/admin/products/#{product.id}/edit"}
-                      class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-900 transition-colors duration-200 font-medium text-sm"
+                      class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200 font-medium text-sm"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
@@ -152,14 +152,14 @@
                       Edit
                     </.link>
 
-                    <span class="text-gray-300">•</span>
+                    <span class="text-gray-300 dark:text-gray-600">•</span>
 
                     <a
                       href="#"
                       phx-click="delete"
                       phx-value-id={product.id}
                       data-confirm="Are you sure you want to delete this product? This action cannot be undone."
-                      class="inline-flex items-center gap-1 text-red-600 hover:text-red-900 transition-colors duration-200 font-medium text-sm"
+                      class="inline-flex items-center gap-1 text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 transition-colors duration-200 font-medium text-sm"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
@@ -183,7 +183,7 @@
       <!-- Empty state -->
       <%= if Enum.empty?(@products) do %>
         <div class="text-center py-12">
-          <div class="mx-auto h-16 w-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+          <div class="mx-auto h-16 w-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
             <svg
               class="h-8 w-8 text-gray-400"
               fill="none"
@@ -199,8 +199,8 @@
               </path>
             </svg>
           </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-2">No products found</h3>
-          <p class="text-gray-500 max-w-sm mx-auto mb-6">
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No products found</h3>
+          <p class="text-gray-500 dark:text-gray-400 max-w-sm mx-auto mb-6">
             <%= if @term do %>
               No products match your search criteria. Try adjusting your search terms.
             <% else %>
@@ -209,7 +209,7 @@
           </p>
           <.link
             patch={~p"/admin/products/new"}
-            class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg transition-colors duration-200 font-medium"
+            class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2.5 rounded-lg transition-colors duration-200 font-medium"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -228,12 +228,12 @@
 
     <!-- Quick stats -->
     <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+      <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
         <div class="flex items-center">
           <div class="flex-shrink-0">
-            <div class="h-10 w-10 bg-green-100 rounded-lg flex items-center justify-center">
+            <div class="h-10 w-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
               <svg
-                class="h-6 w-6 text-green-600"
+                class="h-6 w-6 text-green-600 dark:text-green-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -249,8 +249,8 @@
             </div>
           </div>
           <div class="ml-4">
-            <p class="text-sm font-medium text-gray-600">Total Products</p>
-            <p class="text-2xl font-bold text-gray-900"><%= length(@products) %></p>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Products</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white"><%= length(@products) %></p>
           </div>
         </div>
       </div>
