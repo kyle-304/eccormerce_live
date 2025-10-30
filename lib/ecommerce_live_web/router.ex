@@ -121,8 +121,25 @@ defmodule EcommerceLiveWeb.Router do
     live "/products/:id/edit", ProductLive.Form, :edit
     live "/products/:id", ProductLive.Show, :show
 
-    # Orders (if you have admin order management)
+    # Orders
     # live "/orders", OrderLive.Index, :index
     # live "/orders/:id", OrderLive.Show, :show
+
+    # Payments
+    # live "/payments", PaymentLive.Index, :index
+    # live "/payments/:id", PaymentLive.Show, :show
+
+    # Users
+    # live "/users", UserLive.Index, :index
+    # live "/users/:id", UserLive.Show, :show
+    # live "/users/:id/edit", UserLive.Edit, :edit
+
+    # Reviews
+    # live "/reviews", ReviewLive.Index, :index
+    # live "/reviews/:id", ReviewLive.Show, :show
+
+    # Carts
+    # live "/carts", CartLive.Index, :index
+    # live "/carts/:id", CartLive.Show, :show
   end
 end
