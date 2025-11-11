@@ -10,19 +10,50 @@ defmodule EcommerceLive.Cart do
   alias EcommerceLive.Carts.{Cart, CartItem}
   alias EcommerceLive.Catalog.Product
 
-  # ----------------------------------------------------------------
+  # -----------------------------
   # CARTS
-  # ----------------------------------------------------------------
+  # -----------------------------
 
-  @spec list_carts() :: [Cart.t()]
+  @doc """
+  Returns a list of all carts.
+
+  ## Examples
+
+      iex> list_carts()
+      [%Cart{}, %Cart{}]
+  """
   def list_carts do
     Repo.all(Cart)
   end
 
-  @spec get_cart!(Ecto.UUID.t()) :: Cart.t()
+  @doc """
+  Gets a cart by its ID.
+
+  Raises `Ecto.NoResultsError` if the cart is not found.
+
+  ## Examples
+
+      iex> get_cart!(123)
+      %Cart{id: 123}
+
+      iex> get_cart!(999)
+      ** (Ecto.NoResultsError)
+  """
   def get_cart!(id), do: Repo.get!(Cart, id)
 
-  @spec get_user_cart(Ecto.UUID.t()) :: Cart.t() | nil
+  @doc """
+  Gets the cart for a specific user by their user ID.
+
+  Returns `nil` if no cart is found for the user.
+
+  ## Examples
+
+      iex> get_user_cart(user_id)
+      %Cart{id: 123}
+
+      iex> get_user_cart(non_existing_user_id)
+      nil
+  """
   def get_user_cart(user_id) do
     Cart
     |> where(user_id: ^user_id)
@@ -30,35 +61,94 @@ defmodule EcommerceLive.Cart do
     |> Repo.one()
   end
 
-  @spec create_cart(map()) :: {:ok, Cart.t()} | {:error, Ecto.Changeset.t()}
+  @doc """
+  Creates a new cart with the given attributes.
+
+  ## Examples
+
+      iex> create_cart(%{user_id: 123})
+      {:ok, %Cart{}}
+
+      iex> create_cart(%{user_id: nil})
+      {:error, %Ecto.Changeset{}}
+  """
   def create_cart(attrs \\ %{}) do
     %Cart{}
     |> Cart.changeset(attrs)
     |> Repo.insert()
   end
 
-  @spec delete_cart(Cart.t()) :: {:ok, Cart.t()} | {:error, Ecto.Changeset.t()}
+  @doc """
+  Deletes the given cart.
+
+  Returns `{:ok, %Cart{}}` on success, or `{:error, %Ecto.Changeset{}}` on failure.
+
+  ## Examples
+
+      iex> delete_cart(cart)
+      {:ok, %Cart{}}
+
+      iex> delete_cart(invalid_cart)
+      {:error, %Ecto.Changeset{}}
+  """
   def delete_cart(%Cart{} = cart), do: Repo.delete(cart)
 
-  @spec change_cart(Cart.t(), map()) :: Ecto.Changeset.t()
+  @doc """
+  Returns a changeset for modifying the given cart.
+
+  ## Examples
+
+      iex> change_cart(cart, %{user_id: 456})
+      %Ecto.Changeset{}
+  """
   def change_cart(%Cart{} = cart, attrs \\ %{}) do
     Cart.changeset(cart, attrs)
   end
 
-  # ----------------------------------------------------------------
+  # --------------------------
   # CART ITEMS
-  # ----------------------------------------------------------------
+  # --------------------------
 
-  @spec list_cart_items() :: [CartItem.t()]
+  @doc """
+  Returns a list of all cart items.
+
+  ## Examples
+
+      iex> list_cart_items()
+      [%CartItem{}, %CartItem{}]
+  """
   def list_cart_items do
     Repo.all(CartItem)
   end
 
-  @spec get_cart_item!(Ecto.UUID.t()) :: CartItem.t()
+  @doc """
+  Gets a cart item by its ID.
+
+  Raises `Ecto.NoResultsError` if the cart item is not found.
+
+  ## Examples
+
+      iex> get_cart_item!(123)
+      %CartItem{id: 123}
+
+      iex> get_cart_item!(999)
+      ** (Ecto.NoResultsError)
+  """
   def get_cart_item!(id), do: Repo.get!(CartItem, id)
 
-  @spec add_item_to_cart(Ecto.UUID.t(), map()) ::
-          {:ok, CartItem.t()} | {:error, Ecto.Changeset.t()}
+  @doc """
+  Adds an item to the cart, or updates the quantity if the item already exists.
+
+  Returns `{:ok, %CartItem{}}` on success, or `{:error, %Ecto.Changeset{}}` on failure.
+
+  ## Examples
+
+      iex> add_item_to_cart(cart_id, %{product_id: 1, quantity: 2})
+      {:ok, %CartItem{}}
+
+      iex> add_item_to_cart(cart_id, %{product_id: 1, quantity: -1})
+      {:error, %Ecto.Changeset{}}
+  """
   def add_item_to_cart(cart_id, %{product_id: product_id, quantity: quantity}) do
     case Repo.get_by(CartItem, cart_id: cart_id, product_id: product_id) do
       nil ->
@@ -71,19 +161,47 @@ defmodule EcommerceLive.Cart do
     end
   end
 
-  @spec update_cart_item(CartItem.t(), map()) ::
-          {:ok, CartItem.t()} | {:error, Ecto.Changeset.t()}
+  @doc """
+  Updates the attributes of a cart item.
+
+  Returns `{:ok, %CartItem{}}` on success, or `{:error, %Ecto.Changeset{}}` on failure.
+
+  ## Examples
+
+      iex> update_cart_item(cart_item, %{quantity: 5})
+      {:ok, %CartItem{}}
+
+      iex> update_cart_item(cart_item, %{quantity: -1})
+      {:error, %Ecto.Changeset{}}
+  """
   def update_cart_item(%CartItem{} = cart_item, attrs) do
     cart_item
     |> CartItem.changeset(attrs)
     |> Repo.update()
   end
 
-  @spec remove_item_from_cart(CartItem.t()) ::
-          {:ok, CartItem.t()} | {:error, Ecto.Changeset.t()}
+  @doc """
+  Removes a cart item from the cart.
+
+  Returns `{:ok, %CartItem{}}` on success, or `{:error, %Ecto.Changeset{}}` on failure.
+
+  ## Examples
+
+      iex> remove_item_from_cart(cart_item)
+      {:ok, %CartItem{}}
+  """
   def remove_item_from_cart(%CartItem{} = cart_item), do: Repo.delete(cart_item)
 
-  @spec clear_cart(Ecto.UUID.t()) :: :ok
+  @doc """
+  Clears all items from the cart.
+
+  Returns `:ok` after clearing the cart.
+
+  ## Examples
+
+      iex> clear_cart(cart_id)
+      :ok
+  """
   def clear_cart(cart_id) do
     from(ci in CartItem, where: ci.cart_id == ^cart_id)
     |> Repo.delete_all()
@@ -91,11 +209,18 @@ defmodule EcommerceLive.Cart do
     :ok
   end
 
-  # ----------------------------------------------------------------
+  # ------------------------
   # UTILITIES
-  # ----------------------------------------------------------------
+  # ------------------------
 
-  @spec get_cart_total(Cart.t()) :: Decimal.t()
+  @doc """
+  Calculates the total price of all items in the cart.
+
+  ## Examples
+
+      iex> get_cart_total(cart)
+      #Decimal<100.00>
+  """
   def get_cart_total(%Cart{} = cart) do
     cart = Repo.preload(cart, cart_items: [:product])
 

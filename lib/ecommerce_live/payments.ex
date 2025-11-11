@@ -9,48 +9,115 @@ defmodule EcommerceLive.Payments do
   alias EcommerceLive.Repo
   alias EcommerceLive.Payments.Payment
 
-  # ----------------------------------------------------------------
+  # ------------------------------------
   # PAYMENTS CRUD
-  # ----------------------------------------------------------------
+  # ------------------------------------
 
-  @spec list_payments() :: [Payment.t()]
+  @doc """
+  Lists all payments.
+
+  Returns a list of all payments in the system.
+
+  ## Examples
+
+      iex> list_payments()
+      [%Payment{}, %Payment{}]
+  """
   def list_payments do
     Repo.all(Payment)
   end
 
-  @spec get_payment!(Ecto.UUID.t()) :: Payment.t()
+  @doc """
+  Gets a payment by its ID.
+
+  Raises `Ecto.NoResultsError` if the payment is not found.
+
+  ## Examples
+
+      iex> get_payment!(123)
+      %Payment{id: 123}
+
+      iex> get_payment!(999)
+      ** (Ecto.NoResultsError)
+  """
   def get_payment!(id), do: Repo.get!(Payment, id)
 
-  @spec create_payment(map()) :: {:ok, Payment.t()} | {:error, Ecto.Changeset.t()}
+  @doc """
+  Creates a new payment with the given attributes.
+
+  Returns `{:ok, %Payment{}}` on success or `{:error, %Ecto.Changeset{}}` if validation fails.
+
+  ## Examples
+
+      iex> create_payment(%{amount: 100, method: "credit_card"})
+      {:ok, %Payment{}}
+
+      iex> create_payment(%{amount: -10, method: "paypal"})
+      {:error, %Ecto.Changeset{}}
+  """
   def create_payment(attrs \\ %{}) do
     %Payment{}
     |> Payment.changeset(attrs)
     |> Repo.insert()
   end
 
-  @spec update_payment(Payment.t(), map()) :: {:ok, Payment.t()} | {:error, Ecto.Changeset.t()}
+  @doc """
+  Updates a payment with the given attributes.
+
+  Returns `{:ok, %Payment{}}` on success or `{:error, %Ecto.Changeset{}}` if validation fails.
+
+  ## Examples
+
+      iex> update_payment(payment, %{status: "completed"})
+      {:ok, %Payment{}}
+
+      iex> update_payment(payment, %{amount: -10})
+      {:error, %Ecto.Changeset{}}
+  """
   def update_payment(%Payment{} = payment, attrs) do
     payment
     |> Payment.changeset(attrs)
     |> Repo.update()
   end
 
-  @spec delete_payment(Payment.t()) :: {:ok, Payment.t()} | {:error, Ecto.Changeset.t()}
+  @doc """
+  Deletes the given payment.
+
+  Returns `{:ok, %Payment{}}` on success or `{:error, %Ecto.Changeset{}}` if there is an issue with deletion.
+
+  ## Examples
+
+      iex> delete_payment(payment)
+      {:ok, %Payment{}}
+  """
   def delete_payment(%Payment{} = payment), do: Repo.delete(payment)
 
-  @spec change_payment(Payment.t(), map()) :: Ecto.Changeset.t()
+  @doc """
+  Returns a changeset for modifying the given payment.
+
+  ## Examples
+
+      iex> change_payment(payment, %{status: "pending"})
+      %Ecto.Changeset{}
+  """
   def change_payment(%Payment{} = payment, attrs \\ %{}) do
     Payment.changeset(payment, attrs)
   end
 
-  # ----------------------------------------------------------------
+  # ------------------------------
   # UTILITIES
-  # ----------------------------------------------------------------
+  # ------------------------------
 
   @doc """
   Lists all payments related to a specific order.
+
+  Returns a list of payments for the given order ID.
+
+  ## Examples
+
+      iex> list_payments_for_order(order_id)
+      [%Payment{}, %Payment{}]
   """
-  @spec list_payments_for_order(Ecto.UUID.t()) :: [Payment.t()]
   def list_payments_for_order(order_id) do
     Payment
     |> where(order_id: ^order_id)

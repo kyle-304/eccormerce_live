@@ -10,48 +10,113 @@ defmodule EcommerceLive.Reviews do
   alias EcommerceLive.Repo
   alias EcommerceLive.Reviews.Review
 
-  # ----------------------------------------------------------------
+  # ---------------
   # REVIEWS CRUD
-  # ----------------------------------------------------------------
+  # ---------------
 
-  @spec list_reviews() :: [Review.t()]
+  @doc """
+  Lists all reviews.
+
+  Returns a list of all reviews in the system.
+
+  ## Examples
+
+      iex> list_reviews()
+      [%Review{}, %Review{}]
+  """
   def list_reviews do
     Repo.all(Review)
   end
 
-  @spec get_review!(Ecto.UUID.t()) :: Review.t()
+  @doc """
+  Gets a review by its ID.
+
+  Raises `Ecto.NoResultsError` if the review is not found.
+
+  ## Examples
+
+      iex> get_review!(123)
+      %Review{id: 123}
+
+      iex> get_review!(999)
+      ** (Ecto.NoResultsError)
+  """
   def get_review!(id), do: Repo.get!(Review, id)
 
-  @spec create_review(map()) :: {:ok, Review.t()} | {:error, Ecto.Changeset.t()}
+  @doc """
+  Creates a new review with the given attributes.
+
+  Returns `{:ok, %Review{}}` on success or `{:error, %Ecto.Changeset{}}` if validation fails.
+
+  ## Examples
+
+      iex> create_review(%{rating: 5, comment: "Great product!"})
+      {:ok, %Review{}}
+
+      iex> create_review(%{rating: 6, comment: "Invalid rating"})
+      {:error, %Ecto.Changeset{}}
+  """
   def create_review(attrs \\ %{}) do
     %Review{}
     |> Review.changeset(attrs)
     |> Repo.insert()
   end
 
-  @spec update_review(Review.t(), map()) :: {:ok, Review.t()} | {:error, Ecto.Changeset.t()}
+  @doc """
+  Updates a review with the given attributes.
+
+  Returns `{:ok, %Review{}}` on success or `{:error, %Ecto.Changeset{}}` if validation fails.
+
+  ## Examples
+
+      iex> update_review(review, %{comment: "Updated comment"})
+      {:ok, %Review{}}
+
+      iex> update_review(review, %{rating: 10})
+      {:error, %Ecto.Changeset{}}
+  """
   def update_review(%Review{} = review, attrs) do
     review
     |> Review.changeset(attrs)
     |> Repo.update()
   end
 
-  @spec delete_review(Review.t()) :: {:ok, Review.t()} | {:error, Ecto.Changeset.t()}
+  @doc """
+  Deletes the given review.
+
+  Returns `{:ok, %Review{}}` on success or `{:error, %Ecto.Changeset{}}` if there is an issue with deletion.
+
+  ## Examples
+
+      iex> delete_review(review)
+      {:ok, %Review{}}
+  """
   def delete_review(%Review{} = review), do: Repo.delete(review)
 
-  @spec change_review(Review.t(), map()) :: Ecto.Changeset.t()
+  @doc """
+  Returns a changeset for modifying the given review.
+
+  ## Examples
+
+      iex> change_review(review, %{comment: "Updated comment"})
+      %Ecto.Changeset{}
+  """
   def change_review(%Review{} = review, attrs \\ %{}) do
     Review.changeset(review, attrs)
   end
 
-  # ----------------------------------------------------------------
+  # --------------------
   # QUERIES & UTILITIES
-  # ----------------------------------------------------------------
+  # --------------------
 
   @doc """
   Lists all reviews for a specific product, ordered by creation date (newest first).
+
+  ## Examples
+
+      iex> list_reviews_for_product(product_id)
+      [%Review{}, %Review{}]
   """
-  @spec list_reviews_for_product(Ecto.UUID.t()) :: [Review.t()]
   def list_reviews_for_product(product_id) do
     Review
     |> where(product_id: ^product_id)
@@ -62,8 +127,12 @@ defmodule EcommerceLive.Reviews do
 
   @doc """
   Lists all reviews written by a specific user.
+
+  ## Examples
+
+      iex> list_reviews_by_user(user_id)
+      [%Review{}, %Review{}]
   """
-  @spec list_reviews_by_user(Ecto.UUID.t()) :: [Review.t()]
   def list_reviews_by_user(user_id) do
     Review
     |> where(user_id: ^user_id)
@@ -73,9 +142,14 @@ defmodule EcommerceLive.Reviews do
 
   @doc """
   Calculates the average rating for a specific product.
-  Returns `Decimal` or `0` if no reviews exist.
+
+  Returns `Decimal` or `0` if no reviews exist for the product.
+
+  ## Examples
+
+      iex> average_rating_for_product(product_id)
+      #Decimal<4.5>
   """
-  @spec average_rating_for_product(Ecto.UUID.t()) :: Decimal.t()
   def average_rating_for_product(product_id) do
     result =
       Review
@@ -87,9 +161,18 @@ defmodule EcommerceLive.Reviews do
   end
 
   @doc """
-  Checks if a user has already reviewed a product.
+  Checks if a user has already reviewed a specific product.
+
+  Returns `true` if the user has reviewed the product, `false` otherwise.
+
+  ## Examples
+
+      iex> user_reviewed_product?(user_id, product_id)
+      true
+
+      iex> user_reviewed_product?(user_id, non_reviewed_product_id)
+      false
   """
-  @spec user_reviewed_product?(Ecto.UUID.t(), Ecto.UUID.t()) :: boolean()
   def user_reviewed_product?(user_id, product_id) do
     Review
     |> where(user_id: ^user_id, product_id: ^product_id)
