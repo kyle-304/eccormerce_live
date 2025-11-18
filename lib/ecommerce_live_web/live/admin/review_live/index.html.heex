@@ -21,7 +21,7 @@
           <td class="px-4 py-2">{review.rating}</td>
           <td class="px-4 py-2">{review.comment}</td>
           <td class="px-4 py-2 space-x-2">
-            <.link
+            <%!-- <.link
               patch={Routes.admin_review_show_path(@socket, :show, review)}
               class="text-blue-500 hover:underline"
             >
@@ -33,7 +33,7 @@
               class="text-green-500 hover:underline"
             >
               Edit
-            </.link>
+            </.link> --%>
 
             <.link
               phx-click="delete"
