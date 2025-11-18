@@ -316,4 +316,67 @@ defmodule EcommerceLive.Accounts do
     |> User.phone_changeset(attrs)
     |> Repo.update()
   end
+
+  @doc """
+  Returns all users.
+  """
+  def list_users do
+    Repo.all(User)
+  end
+
+  @doc """
+  Search users by email or phone (case-insensitive).
+  """
+  def search_users(term) when is_binary(term) do
+    term = "%#{term}%"
+
+    User
+    |> where([u], ilike(u.email, ^term) or ilike(u.phone, ^term))
+    |> Repo.all()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking user changes.
+  """
+  def change_user(%User{} = user, attrs \\ %{}) do
+    user
+    |> User.email_changeset(attrs)
+    |> User.phone_changeset(attrs)
+  end
+
+  def register_user(attrs) do
+    %User{}
+    |> change_user(attrs)
+    |> User.password_changeset(attrs)
+    |> Ecto.Changeset.put_change(:role, Map.get(attrs, "role", :customer))
+    |> Repo.insert()
+  end
+
+  def update_user(%User{} = user, attrs) do
+    user
+    |> change_user(attrs)
+    |> User.password_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Updates a user.
+
+  Returns `{:ok, %User{}}` or `{:error, %Ecto.Changeset{}}`.
+  """
+  def update_user(%User{} = user, attrs) do
+    user
+    # or another changeset function depending on your validation
+    |> User.email_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a user.
+
+  Returns `{:ok, %User{}}` or `{:error, %Ecto.Changeset{}}`.
+  """
+  def delete_user(%User{} = user) do
+    Repo.delete(user)
+  end
 end

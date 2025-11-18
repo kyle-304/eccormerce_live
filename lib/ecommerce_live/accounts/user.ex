@@ -161,13 +161,13 @@ defmodule EcommerceLive.Accounts.User do
 
   This does NOT affect normal user registration.
   """
-  def admin_changeset(user, attrs) do
-    user
-    |> cast(attrs, [:email, :password, :role])
-    |> validate_required([:email, :password])
-    |> validate_inclusion(:role, [:admin])
-    |> validate_email([])
-    |> validate_password([])
-    |> put_change(:role, :admin)
-  end
+def admin_changeset(user, attrs) do
+  user
+  |> cast(attrs, [:email, :password, :role, :phone])  # include :phone here
+  |> validate_required([:email, :password, :role])
+  |> validate_inclusion(:role, [:admin])
+  |> validate_email([])
+  |> validate_password([])
+  |> put_change(:role, :admin)
+end
 end
