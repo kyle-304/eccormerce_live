@@ -1,0 +1,51 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4">Reviews</h1>
+
+  <table class="min-w-full bg-white">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="px-4 py-2">ID</th>
+        <th class="px-4 py-2">Product</th>
+        <th class="px-4 py-2">User</th>
+        <th class="px-4 py-2">Rating</th>
+        <th class="px-4 py-2">Comment</th>
+        <th class="px-4 py-2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for review <- @reviews do %>
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-2">{review.id}</td>
+          <td class="px-4 py-2">{review.product.name || review.product_id}</td>
+          <td class="px-4 py-2">{review.user.email || review.user_id}</td>
+          <td class="px-4 py-2">{review.rating}</td>
+          <td class="px-4 py-2">{review.comment}</td>
+          <td class="px-4 py-2 space-x-2">
+            <.link
+              patch={Routes.admin_review_show_path(@socket, :show, review)}
+              class="text-blue-500 hover:underline"
+            >
+              Show
+            </.link>
+
+            <.link
+              patch={Routes.admin_review_show_path(@socket, :edit, review)}
+              class="text-green-500 hover:underline"
+            >
+              Edit
+            </.link>
+
+            <.link
+              phx-click="delete"
+              phx-value-id={review.id}
+              data-confirm="Are you sure?"
+              class="text-red-500 hover:underline"
+            >
+              Delete
+            </.link>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

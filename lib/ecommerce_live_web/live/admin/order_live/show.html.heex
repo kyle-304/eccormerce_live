@@ -1,0 +1,32 @@
+<h1 class="text-xl font-bold mb-4">Order Details</h1>
+
+<p><b>User:</b> <%= @order.user.email %></p>
+<p><b>Status:</b> <%= @order.order_status %></p>
+<p><b>Payment:</b> <%= @order.payment_status %></p>
+<p><b>Date:</b> <%= @order.order_date %></p>
+
+<h2 class="text-lg font-semibold mt-6">Items</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Qty</th>
+      <th>Unit</th>
+      <th>Subtotal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for item <- @order.order_items do %>
+      <tr>
+        <td><%= item.product.name %></td>
+        <td><%= item.quantity %></td>
+        <td>$<%= item.unit_price %></td>
+        <td>$<%= item.subtotal %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h3 class="text-lg font-bold mt-4">
+  Total: $<%= @order.total_amount %>
+</h3>
