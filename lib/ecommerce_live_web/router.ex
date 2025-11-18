@@ -121,6 +121,12 @@ defmodule EcommerceLiveWeb.Router do
     live "/products/:id/edit", ProductLive.Form, :edit
     live "/products/:id", ProductLive.Show, :show
 
+    # Users
+    live "/users", UserLive.Index, :index
+    live "/users/new", UserLive.Form, :new
+    live "/users/:id/edit", UserLive.Form, :edit
+    live "/users/:id", UserLive.Show, :show
+
     # Orders
     # live "/orders", OrderLive.Index, :index
     # live "/orders/:id", OrderLive.Show, :show
@@ -128,11 +134,6 @@ defmodule EcommerceLiveWeb.Router do
     # Payments
     # live "/payments", PaymentLive.Index, :index
     # live "/payments/:id", PaymentLive.Show, :show
-
-    # Users
-    # live "/users", UserLive.Index, :index
-    # live "/users/:id", UserLive.Show, :show
-    # live "/users/:id/edit", UserLive.Edit, :edit
 
     # Reviews
     # live "/reviews", ReviewLive.Index, :index
