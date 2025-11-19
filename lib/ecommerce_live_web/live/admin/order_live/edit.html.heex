@@ -1,0 +1,36 @@
+<h1 class="text-xl font-bold mb-4">Edit Order</h1>
+
+<form phx-change="validate" phx-submit="save">
+
+  <!-- Order Status -->
+  <div class="mb-4">
+    <label class="block font-medium mb-1">Order Status</label>
+    <select name="order[order_status]" class="border rounded px-2 py-1 w-full">
+      <%= Phoenix.HTML.Form.options_for_select(
+            ["pending", "processing", "shipped", "delivered", "cancelled"],
+            @changeset.changes[:order_status] || @order.order_status
+          ) %>
+    </select>
+    <%= for {msg, _} <- Keyword.get(@changeset.errors, :order_status, []) do %>
+      <p class="text-red-500 text-sm"><%= msg %></p>
+    <% end %>
+  </div>
+
+  <!-- Payment Status -->
+  <div class="mb-4">
+    <label class="block font-medium mb-1">Payment Status</label>
+    <select name="order[payment_status]" class="border rounded px-2 py-1 w-full">
+      <%= Phoenix.HTML.Form.options_for_select(
+            ["pending", "paid", "failed", "refunded"],
+            @changeset.changes[:payment_status] || @order.payment_status
+          ) %>
+    </select>
+    <%= for {msg, _} <- Keyword.get(@changeset.errors, :payment_status, []) do %>
+      <p class="text-red-500 text-sm"><%= msg %></p>
+    <% end %>
+  </div>
+
+  <button class="bg-blue-600 text-white px-4 py-2 rounded">
+    Save
+  </button>
+</form>

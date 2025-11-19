@@ -1,0 +1,34 @@
+<div class="flex justify-between mb-4">
+  <h1 class="text-xl font-bold">Orders</h1>
+  <button phx-click="refresh" class="btn">Refresh</button>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>User</th>
+      <th>Total</th>
+      <th>Status</th>
+      <th>Payment</th>
+      <th>Date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for order <- @orders do %>
+      <tr>
+        <td><%= order.id %></td>
+        <td><%= order.user.email %></td>
+        <td>$<%= order.total_amount %></td>
+        <td><%= order.order_status %></td>
+        <td><%= order.payment_status %></td>
+        <td><%= order.order_date %></td>
+        <td>
+          <.link patch={~p"/admin/orders/#{order.id}"}>View</.link>
+          <.link patch={~p"/admin/orders/#{order.id}/edit"} class="ml-2">Edit</.link>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
